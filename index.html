@@ -53,6 +53,7 @@
     #choice {
       display: none;
       margin-top: 2em;
+      position: relative;
     }
     #result {
       font-size: 1.5em;
@@ -62,7 +63,7 @@
   </style>
 </head>
 <body>
-  <h1>呂慧恩，這是張紘緯想對妳說的話...</h1>
+  <h1>呂慧恩，這是我想對妳說的話...</h1>
   <button class="button" onclick="startConfession()">開始告白</button>
 
   <div id="message"></div>
@@ -90,7 +91,6 @@
     const choiceBox = document.getElementById("choice");
     const resultBox = document.getElementById("result");
     const noBtn = document.getElementById("noBtn");
-    let size = 1.2;
 
     function typeWriter(text, callback) {
       if (charIndex < text.length) {
@@ -130,12 +130,11 @@
     }
 
     function escapeBtn() {
-      size -= 0.1;
-      if (size < 0.3) size = 1.2;
-      noBtn.style.fontSize = size + "em";
+      const newX = Math.random() * 80;
+      const newY = Math.random() * 60;
       noBtn.style.position = "absolute";
-      noBtn.style.left = Math.random() * 80 + "vw";
-      noBtn.style.top = Math.random() * 60 + "vh";
+      noBtn.style.left = newX + "vw";
+      noBtn.style.top = newY + "vh";
     }
 
     function confetti() {
