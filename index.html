@@ -7,49 +7,72 @@
   <title>給呂慧恩的小告白</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap');
-    body {{
+    body {
       margin: 0;
       padding: 0;
       background: url("photo.png") no-repeat center center fixed;
       background-size: cover;
       font-family: '微軟正黑體', sans-serif;
-      color: #d63384;
       text-align: center;
+      color: #d63384;
       height: 100vh;
       overflow: hidden;
-    }}
-    h1 {{
-      margin-top: 15vh;
-      font-size: 3em;
-      color: #ff5ca2;
-      text-shadow: 2px 2px white;
-    }}
-    p {{
-      font-family: 'Zhi Mang Xing', cursive;
-      font-size: 2.2em;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 1em;
       background: linear-gradient(45deg, #ff8ac3, #ffb6d9);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+    #message {
+      font-family: 'Zhi Mang Xing', cursive;
+      font-size: 2em;
+      white-space: pre-wrap;
+      padding: 1em;
+      background-color: rgba(255,255,255,0.5);
+      border-radius: 15px;
+      display: none;
+    }
+    .button {
+      padding: 10px 20px;
+      font-size: 1.2em;
+      margin: 0.5em;
+      border: none;
+      border-radius: 10px;
+      background-color: #ff69b4;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    #choice {
+      display: none;
+      margin-top: 2em;
+    }
+    #result {
+      font-size: 1.5em;
       margin-top: 1em;
-    }}
-    .heart {{
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: url("https://upload.wikimedia.org/wikipedia/commons/3/3f/Red_Heart.png");
-      background-size: cover;
-      animation: fall 5s linear infinite;
-      opacity: 0.8;
-    }}
-    @keyframes fall {{
-      0% {{transform: translateY(-100px) rotate(0deg);}}
-      100% {{transform: translateY(110vh) rotate(360deg);}}
-    }}
+      color: #ff4081;
+    }
   </style>
 </head>
 <body>
-  <h1>呂慧恩</h1>
-  <p>我們一起走下去好不好？</p>
+  <h1>呂慧恩，這是張紘緯想對妳說的話...</h1>
+  <button class="button" onclick="startConfession()">開始告白</button>
+
+  <div id="message"></div>
+
+  <div id="choice">
+    <button class="button" onclick="respond(true)">願意 ❤️</button>
+    <button class="button" id="noBtn" onmouseover="escapeBtn()">再想想</button>
+  </div>
+
+  <div id="result"></div>
 
   <audio autoplay loop>
     <source src="bgm.mp3" type="audio/mpeg" />
@@ -57,14 +80,84 @@
   </audio>
 
   <script>
-    for (let i = 0; i < 30; i++) {{
-      let heart = document.createElement("div");
-      heart.className = "heart";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
-      heart.style.width = heart.style.height = Math.random() * 20 + 10 + "px";
-      document.body.appendChild(heart);
-    }}
+    const messages = [
+      "我想陪妳走過每一個未來的日子",
+      "願意讓我陪妳一起走下去嗎？"
+    ];
+    let index = 0;
+    let charIndex = 0;
+    const messageBox = document.getElementById("message");
+    const choiceBox = document.getElementById("choice");
+    const resultBox = document.getElementById("result");
+    const noBtn = document.getElementById("noBtn");
+    let size = 1.2;
+
+    function typeWriter(text, callback) {
+      if (charIndex < text.length) {
+        messageBox.innerHTML += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(() => typeWriter(text, callback), 50);
+      } else {
+        callback();
+      }
+    }
+
+    function startConfession() {
+      document.querySelector("button").style.display = "none";
+      messageBox.style.display = "block";
+      typeWriter(messages[index], () => {
+        index++;
+        if (index < messages.length) {
+          charIndex = 0;
+          setTimeout(() => {
+            messageBox.innerHTML += "\n\n";
+            typeWriter(messages[index], () => {
+              choiceBox.style.display = "block";
+            });
+          }, 500);
+        } else {
+          choiceBox.style.display = "block";
+        }
+      });
+    }
+
+    function respond(isYes) {
+      choiceBox.style.display = "none";
+      if (isYes) {
+        resultBox.innerText = "耶！我一定會好好珍惜妳、讓妳每天都笑！💖";
+        confetti();
+      }
+    }
+
+    function escapeBtn() {
+      size -= 0.1;
+      if (size < 0.3) size = 1.2;
+      noBtn.style.fontSize = size + "em";
+      noBtn.style.position = "absolute";
+      noBtn.style.left = Math.random() * 80 + "vw";
+      noBtn.style.top = Math.random() * 60 + "vh";
+    }
+
+    function confetti() {
+      for (let i = 0; i < 50; i++) {
+        let heart = document.createElement("div");
+        heart.textContent = "💖";
+        heart.style.position = "fixed";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = "-5vh";
+        heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+        heart.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+        document.body.appendChild(heart);
+      }
+    }
   </script>
+  <style>
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+  </style>
 </body>
 </html>
