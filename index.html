@@ -63,7 +63,7 @@
   </style>
 </head>
 <body>
-  <h1>呂慧恩，這是我想對妳說的話...</h1>
+  <h1>呂慧恩，這是張紘緯想對妳說的話...</h1>
   <button class="button" onclick="startConfession()">開始告白</button>
 
   <div id="message"></div>
@@ -130,11 +130,17 @@
     }
 
     function escapeBtn() {
-      const newX = Math.random() * 80;
-      const newY = Math.random() * 60;
-      noBtn.style.position = "absolute";
-      noBtn.style.left = newX + "vw";
-      noBtn.style.top = newY + "vh";
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
+      const maxX = window.innerWidth - btnWidth;
+      const maxY = window.innerHeight - btnHeight;
+
+      const newX = Math.random() * maxX;
+      const newY = Math.random() * maxY;
+
+      noBtn.style.position = "fixed";
+      noBtn.style.left = newX + "px";
+      noBtn.style.top = newY + "px";
     }
 
     function confetti() {
