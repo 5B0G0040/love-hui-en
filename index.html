@@ -132,8 +132,8 @@
     function escapeBtn() {
       const btnWidth = noBtn.offsetWidth;
       const btnHeight = noBtn.offsetHeight;
-      const maxX = window.innerWidth - btnWidth;
-      const maxY = window.innerHeight - btnHeight;
+      const maxX = window.innerWidth * 0.8;
+      const maxY = window.innerHeight * 0.6;
 
       const newX = Math.random() * maxX;
       const newY = Math.random() * maxY;
